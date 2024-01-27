@@ -4,11 +4,10 @@ const Engine: {
   start: () => void;
 } = {
   load: function (saveString) {
-    console.log("LOai")
+    console.log("LOai");
   },
 
-  start: function () {
-  },
-}
+  start: function () {},
+};
 
 export { Engine };

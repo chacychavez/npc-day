@@ -41,7 +41,6 @@ export async function seedDatabase(uri: string | undefined, isSeeding: boolean) 
       console.log("Database seeded successfully!");
       const newCount = await collection.countDocuments();
       console.log("New projects count:", newCount);
-  
     } else {
       return console.log("Already seeded! skipping...");
     }

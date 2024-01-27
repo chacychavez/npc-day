@@ -1,7 +1,7 @@
-import { Network, Alchemy, OwnedNftsResponse } from 'alchemy-sdk';
 import { useCallback, useEffect, useState } from "react";
-import { useGlobalState } from "~~/services/store/store";
+import { Alchemy, Network, OwnedNftsResponse } from "alchemy-sdk";
 import scaffoldConfig from "~~/scaffold.config";
+import { useGlobalState } from "~~/services/store/store";
 
 const settings = {
   apiKey: scaffoldConfig.alchemyApiKey,
@@ -9,7 +9,6 @@ const settings = {
 };
 
 export function useAccountNFTs(address: string) {
-
   const [nfts, setNfts] = useState<OwnedNftsResponse>();
   const [currentPage, setCurrentPage] = useState(0);
   const [pageKey, setPageKey] = useState(0);
@@ -22,7 +21,6 @@ export function useAccountNFTs(address: string) {
 
   const fetchNFTs = useCallback(async () => {
     try {
-
       // if we have cached data, use that instead of fetching
       if (cachedNFTData[address]) {
         const lastUpdated = cachedNFTData[address].validAt.blockTimestamp;
@@ -31,7 +29,7 @@ export function useAccountNFTs(address: string) {
       }
 
       const fetchedNFTs = await alchemy.nft.getNftsForOwner(address);
-      let updatedData:any = {};
+      let updatedData: any = {};
       updatedData[address] = fetchedNFTs;
 
       const pageKey = fetchedNFTs.pageKey ? parseInt(fetchedNFTs.pageKey) : 0;
@@ -43,12 +41,10 @@ export function useAccountNFTs(address: string) {
       setNfts(fetchedNFTs);
       setCachedNFTData(updatedData);
       setLoading(false);
-
     } catch (err) {
       setError(err instanceof Error ? err : new Error("An error occurred."));
     }
-    
-  }, [currentPage])
+  }, [currentPage]);
 
   useEffect(() => {
     setError(null);
@@ -61,7 +57,6 @@ export function useAccountNFTs(address: string) {
     setCurrentPage,
     loading,
     error,
-    pageKey
-  };  
+    pageKey,
+  };
 }
-

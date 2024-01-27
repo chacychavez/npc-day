@@ -1,5 +1,5 @@
+import { OwnedNftsResponse, OwnedNftsValidAt } from "alchemy-sdk";
 import create from "zustand";
-import { OwnedNftsResponse, OwnedNftsValidAt } from 'alchemy-sdk';
 
 /**
  * Zustand Store
@@ -10,15 +10,14 @@ import { OwnedNftsResponse, OwnedNftsValidAt } from 'alchemy-sdk';
  * Think about it as a global useState.
  */
 
-// format of cachedNFTData = 
+// format of cachedNFTData =
 // {
 //  [address: string]: OwnedNftsResponse, ....
 //  }
 
-
 type TGlobalState = {
   nativeCurrencyPrice: number;
-  cachedNFTData: any,
+  cachedNFTData: any;
   setNativeCurrencyPrice: (newNativeCurrencyPriceState: number) => void;
   setCachedNFTData: (newCachedNFTData: any) => void;
 };

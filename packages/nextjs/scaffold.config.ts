@@ -13,8 +13,8 @@ export type ScaffoldConfig = {
 const scaffoldConfig = {
   // The network where your DApp lives in
   // targetNetwork: chains.hardhat,
-   targetNetwork: chains.mainnet,
-  
+  targetNetwork: chains.mainnet,
+
   openAIApiKey: process.env.NEXT_PUBLIC_OPENAI_KEY || "",
 
   // The interval at which your front-end polls the RPC servers for new data
