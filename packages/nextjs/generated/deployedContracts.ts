@@ -515,7 +515,8 @@ const contracts = {
                       type: "uint256",
                     },
                   ],
-                  internalType: "struct NestedAccountExecutor.ERC6551AccountInfo[]",
+                  internalType:
+                    "struct NestedAccountExecutor.ERC6551AccountInfo[]",
                   name: "proof",
                   type: "tuple[]",
                 },
