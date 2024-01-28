@@ -15,17 +15,22 @@ export const NFTViewer = ({ selectedNFT }: TNFTViewerProps) => {
         <NFTCard nft={selectedNFT} readOnly />
       </div>
       <div className="flex-1 flex flex-col gap-y-5">
-        <div className="h-[60vh] overflow-auto py-2 px-4  bg-base-100 rounded-xl">
-          {messages.slice(1).map((m, idx) => (
-            <div key={idx} className={`my-2 flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
-              <div className={`rounded-xl p-4 ${m.role === "user" ? "bg-primary " : "bg-secondary"}`}>{m.content}</div>
-            </div>
-          ))}
+        <div className="flex flex-col-reverse h-[60vh] overflow-auto py-2 px-4  bg-base-100 rounded-xl">
           {loading && (
             <div className="my-2 flex justify-start">
               <div className="rounded-xl p-4 bg-secondary">Typing...</div>
             </div>
           )}
+          {messages
+            .slice(1)
+            .reverse()
+            .map((m, idx) => (
+              <div key={idx} className={`my-2 flex ${m.role === "user" ? "justify-end" : "justify-start"}`}>
+                <div className={`rounded-xl p-4 ${m.role === "user" ? "bg-primary " : "bg-secondary"}`}>
+                  {m.content}
+                </div>
+              </div>
+            ))}
         </div>
         <div className="flex">
           <textarea
