@@ -1,7 +1,7 @@
-import { useEffect } from "react";
 import { NFTCard } from "../NFTCard";
 import { NFTViewer } from "../NFTViewer";
 import useNFTPicker from "./useNFTPicker";
+import { OwnedNft } from "alchemy-sdk";
 import { useAccountNFTs } from "~~/hooks/spark";
 
 type TNFTPickerProps = {
@@ -36,7 +36,7 @@ export const NFTPicker = ({ address, className = "" }: TNFTPickerProps) => {
       </div>
     );
   }
-
+  console.log(selectedNFT);
   return (
     <div className={className}>
       <div className="w-full flex flex-col items-center justify-center">
@@ -54,18 +54,16 @@ export const NFTPicker = ({ address, className = "" }: TNFTPickerProps) => {
         <div className="mt-5">NFTs found: {filteredNFTs?.length}</div>
       </div>
 
-      {selectedNFT && (
-        <dialog className="modal" ref={modalRef}>
-          <div className="modal-box w-11/12 max-w-5xl bg-base-200">
-            <form method="dialog" className="flex justify-between items-start mb-2">
-              <h3 className="font-bold text-lg">NFT Viewer</h3>
-              {/* if there is a button in form, it will close the modal */}
-              <button className="btn btn-primary btn-sm">close</button>
-            </form>
-            <NFTViewer selectedNFT={selectedNFT} />
-          </div>
-        </dialog>
-      )}
+      <dialog className="modal" ref={modalRef}>
+        <div className="modal-box w-11/12 max-w-5xl bg-base-200">
+          <form method="dialog" className="flex justify-between items-start mb-2">
+            <h3 className="font-bold text-lg">NFT Viewer</h3>
+            {/* if there is a button in form, it will close the modal */}
+            <button className="btn btn-primary btn-sm">close</button>
+          </form>
+          {selectedNFT && <NFTViewer selectedNFT={selectedNFT} />}
+        </div>
+      </dialog>
 
       <div className="flex flex-wrap justify-center mt-10 gap-x-4 gap-y-6">
         {filteredNFTs?.map(nft => (
