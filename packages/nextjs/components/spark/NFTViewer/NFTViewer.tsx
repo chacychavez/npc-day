@@ -1,8 +1,9 @@
 import { NFTCard } from "../NFTCard";
 import useNFTViewer from "./useNFTViewer";
+import { OwnedNft } from "alchemy-sdk";
 
 type TNFTViewerProps = {
-  selectedNFT: any;
+  selectedNFT: OwnedNft;
 };
 
 export const NFTViewer = ({ selectedNFT }: TNFTViewerProps) => {

@@ -17,14 +17,14 @@ import create from "zustand";
 
 type TGlobalState = {
   nativeCurrencyPrice: number;
-  cachedNFTData: any;
+  cachedNFTData: Record<string, OwnedNftsResponse>;
   setNativeCurrencyPrice: (newNativeCurrencyPriceState: number) => void;
-  setCachedNFTData: (newCachedNFTData: any) => void;
+  setCachedNFTData: (newCachedNFTData: Record<string, OwnedNftsResponse>) => void;
 };
 
 export const useGlobalState = create<TGlobalState>(set => ({
   nativeCurrencyPrice: 0,
   cachedNFTData: {},
   setNativeCurrencyPrice: (newValue: number): void => set(() => ({ nativeCurrencyPrice: newValue })),
-  setCachedNFTData: (newValue: any): void => set(() => ({ cachedNFTData: newValue })),
+  setCachedNFTData: (newValue: Record<string, OwnedNftsResponse>): void => set(() => ({ cachedNFTData: newValue })),
 }));

@@ -1,33 +1,20 @@
 import { useRef, useState } from "react";
-import { useAccountNFTs } from "~~/hooks/spark";
+import { OwnedNft } from "alchemy-sdk";
 
-// import { getTargetNetwork } from "~~/utils/scaffold-eth";
-
-const useNFTPicker = (address: string) => {
+const useNFTPicker = () => {
   // const configuredNetwork = getTargetNetwork();
-  const {
-    nfts,
-    // pageKey,
-    // setCurrentPage,
-    loading,
-    error,
-  } = useAccountNFTs(address);
+
   const [searchTerm, setSearchTerm] = useState("");
-  const [selectedNFT, setSelectedNFT] = useState<any>();
+  const [selectedNFT, setSelectedNFT] = useState<OwnedNft>();
   const modalRef = useRef<HTMLDialogElement>(null);
 
-  const openNFTViewer = (nft: any) => {
+  const openNFTViewer = (nft: OwnedNft) => {
     setSelectedNFT(nft);
     modalRef.current?.showModal();
   };
 
-  const filteredNFTs = nfts?.ownedNfts.filter(nft => nft.name?.toLowerCase().includes(searchTerm.toLowerCase()));
-
   return {
-    nfts,
-    filteredNFTs,
-    loading,
-    error,
+    searchTerm,
     setSearchTerm,
     selectedNFT,
     setSelectedNFT,

@@ -1,6 +1,8 @@
+import { useEffect } from "react";
 import { NFTCard } from "../NFTCard";
 import { NFTViewer } from "../NFTViewer";
 import useNFTPicker from "./useNFTPicker";
+import { useAccountNFTs } from "~~/hooks/spark";
 
 type TNFTPickerProps = {
   address: string;
@@ -11,10 +13,12 @@ type TNFTPickerProps = {
  * Allow user to pick an NFT in their address, uses Alchemy
  */
 export const NFTPicker = ({ address, className = "" }: TNFTPickerProps) => {
-  const { nfts, filteredNFTs, loading, error, setSearchTerm, selectedNFT, openNFTViewer, modalRef } =
-    useNFTPicker(address);
+  const { searchTerm, setSearchTerm, selectedNFT, openNFTViewer, modalRef } = useNFTPicker();
+  const { nfts, loading, error, loadMore, pageKey } = useAccountNFTs(address);
 
-  if (!address || loading || nfts === null) {
+  const filteredNFTs = nfts?.filter(nft => nft.name?.toLowerCase().includes(searchTerm.toLowerCase()));
+
+  if (address && loading && nfts.length === 0) {
     return (
       <div className="animate-pulse flex space-x-4">
         <div className="rounded-md bg-slate-300 h-6 w-6"></div>
@@ -65,9 +69,20 @@ export const NFTPicker = ({ address, className = "" }: TNFTPickerProps) => {
 
       <div className="flex flex-wrap justify-center mt-10 gap-x-4 gap-y-6">
         {filteredNFTs?.map(nft => (
-          <NFTCard key={nft.name} nft={nft} openNFTViewer={openNFTViewer} />
+          <NFTCard key={nft.name + nft.tokenId} nft={nft} openNFTViewer={openNFTViewer} />
         ))}
       </div>
+      {pageKey && (
+        <div className="flex justify-center mt-4">
+          {!loading ? (
+            <button className="btn btn-primary" onClick={loadMore}>
+              Load more
+            </button>
+          ) : (
+            <div className="text-lg py-3">Fetching more nfts...</div>
+          )}
+        </div>
+      )}
     </div>
   );
 };

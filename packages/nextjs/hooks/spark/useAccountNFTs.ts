@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
-import { Alchemy, Network, OwnedNftsResponse } from "alchemy-sdk";
+import { Alchemy, Network, OwnedNft, OwnedNftsResponse } from "alchemy-sdk";
 import scaffoldConfig from "~~/scaffold.config";
 import { useGlobalState } from "~~/services/store/store";
 
@@ -9,9 +9,8 @@ const settings = {
 };
 
 export function useAccountNFTs(address: string) {
-  const [nfts, setNfts] = useState<OwnedNftsResponse>();
-  const [currentPage, setCurrentPage] = useState(0);
-  const [pageKey, setPageKey] = useState(0);
+  const [nfts, setNfts] = useState<OwnedNft[]>([]);
+  const [pageKey, setPageKey] = useState<string>();
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<Error | null>(null);
 
@@ -19,44 +18,55 @@ export function useAccountNFTs(address: string) {
   const cachedNFTData = useGlobalState(state => state.cachedNFTData);
   const setCachedNFTData = useGlobalState(state => state.setCachedNFTData);
 
-  const fetchNFTs = useCallback(async () => {
-    try {
-      // if we have cached data, use that instead of fetching
-      if (cachedNFTData[address]) {
-        const lastUpdated = cachedNFTData[address].validAt.blockTimestamp;
+  const fetchNFTs = useCallback(
+    async (pageKey?: string) => {
+      setError(null);
+      setLoading(true);
+      try {
+        // if we have cached data, use that instead of fetching
+        const cachedData = cachedNFTData[address + (pageKey ?? "")];
+        if (cachedData) {
+          const { validAt, ownedNfts, pageKey: cachedPageKey } = cachedData;
+          const lastUpdated = validAt.blockTimestamp;
+          console.log(`Using cached data for ${address} from ${lastUpdated}`);
+          setPageKey(cachedPageKey);
+          setNfts(ownedNfts);
+        } else {
+          const fetchedNFTs = await alchemy.nft.getNftsForOwner(address, { pageKey });
+          setPageKey(fetchedNFTs.pageKey ? fetchedNFTs.pageKey : undefined);
 
-        console.log(`Using cached data for ${address} from ${lastUpdated}`);
+          setNfts(currNfts => {
+            const newNfts = pageKey ? [...currNfts, ...fetchedNFTs.ownedNfts] : fetchedNFTs.ownedNfts;
+            // Cache data
+            const updatedData: Record<string, OwnedNftsResponse> = {};
+            const newCachedNFTData = { ...fetchedNFTs };
+            newCachedNFTData.ownedNfts = newNfts;
+            updatedData[address + (pageKey ?? "")] = newCachedNFTData;
+            setCachedNFTData(updatedData);
+            return newNfts;
+          });
+        }
+        setLoading(false);
+      } catch (err) {
+        setError(err instanceof Error ? err : new Error("An error occurred."));
       }
+    },
+    [address],
+  );
 
-      const fetchedNFTs = await alchemy.nft.getNftsForOwner(address);
-      let updatedData: any = {};
-      updatedData[address] = fetchedNFTs;
-
-      const pageKey = fetchedNFTs.pageKey ? parseInt(fetchedNFTs.pageKey) : 0;
-      setPageKey(pageKey);
-
-      console.log(fetchedNFTs);
-      cachedNFTData[address] = fetchedNFTs;
-
-      setNfts(fetchedNFTs);
-      setCachedNFTData(updatedData);
-      setLoading(false);
-    } catch (err) {
-      setError(err instanceof Error ? err : new Error("An error occurred."));
-    }
-  }, [currentPage]);
+  const loadMore = () => {
+    fetchNFTs(pageKey);
+  };
 
   useEffect(() => {
-    setError(null);
-    setLoading(true);
     fetchNFTs();
   }, [fetchNFTs]);
 
   return {
     nfts,
-    setCurrentPage,
     loading,
     error,
     pageKey,
+    loadMore,
   };
 }

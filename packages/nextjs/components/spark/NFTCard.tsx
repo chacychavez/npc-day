@@ -1,17 +1,18 @@
 import { useState } from "react";
 import Image from "next/image";
+import { OwnedNft } from "alchemy-sdk";
 
 type TNFTCardProps = {
   readOnly?: boolean;
-  nft: any;
-  openNFTViewer?: (nft: any) => void;
+  nft: OwnedNft;
+  openNFTViewer?: (nft: OwnedNft) => void;
 };
 const DESC_MAX_LENGTH = 100;
 
 export const NFTCard = ({ readOnly = false, nft, openNFTViewer }: TNFTCardProps) => {
   const [expandDescription, setExpandDescription] = useState(false);
   const toggleExpand = () => setExpandDescription(!expandDescription);
-  const truncated = nft.description?.length > DESC_MAX_LENGTH;
+  const truncated = nft.description ? nft.description?.length > DESC_MAX_LENGTH : false;
 
   return (
     <div className="card w-96 bg-base-100 shadow-xl">
@@ -19,7 +20,7 @@ export const NFTCard = ({ readOnly = false, nft, openNFTViewer }: TNFTCardProps)
         {nft.image.pngUrl ? (
           <Image
             src={String(nft.image.pngUrl ?? "")}
-            alt={nft.name}
+            alt={nft.name ?? ""}
             height={320}
             width={320}
             className="object-cover h-80 w-96"

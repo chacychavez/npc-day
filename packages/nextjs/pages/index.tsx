@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import type { NextPage } from "next";
 import { useAccount } from "wagmi";
 import { MetaHeader } from "~~/components/MetaHeader";
@@ -39,10 +39,8 @@ const Home: NextPage = () => {
       <MetaHeader />
       <div className="flex items-center flex-col flex-grow">
         <div className="px-5 py-5">
-          {address ? (
-            <NFTPicker address={address}></NFTPicker>
-          ) : guestAccount ? (
-            <NFTPicker address={guestAccount}></NFTPicker>
+          {address || guestAccount ? (
+            <NFTPicker address={address ?? guestAccount ?? ""} />
           ) : (
             <>
               <div>Connect Wallet to select one of your NFTs, or press the button below to use a guest wallet.</div>
