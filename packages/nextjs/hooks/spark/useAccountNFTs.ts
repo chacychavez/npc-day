@@ -46,9 +46,10 @@ export function useAccountNFTs(address: string) {
             return newNfts;
           });
         }
-        setLoading(false);
       } catch (err) {
         setError(err instanceof Error ? err : new Error("An error occurred."));
+      } finally {
+        setLoading(false);
       }
     },
     [address],

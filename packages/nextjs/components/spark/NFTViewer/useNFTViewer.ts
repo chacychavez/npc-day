@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
+import { OwnedNft } from "alchemy-sdk";
 import https from "https";
 import scaffoldConfig from "~~/scaffold.config";
 
@@ -11,7 +12,7 @@ type TMessage = {
   content: string;
 };
 
-const useNFTViewer = (selectedNFT: any) => {
+const useNFTViewer = (selectedNFT: OwnedNft) => {
   const initialPrompt = useMemo(
     () =>
       "Roleplay as an actual character. I will start with sending you a JSON object containing some information about you. Never talk about NFTs or the blockchain. JSON follows: \n" +
@@ -31,6 +32,8 @@ const useNFTViewer = (selectedNFT: any) => {
 
   const [messages, setMessages] = useState<TMessage[]>(initialMessages);
   const [message, setMessage] = useState<string>("");
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<Error>();
 
   useEffect(() => {
     setMessages(initialMessages);
@@ -55,30 +58,35 @@ const useNFTViewer = (selectedNFT: any) => {
         Authorization: `Bearer ${settings.openAIApiKey}`,
       },
     };
+    setLoading(true);
+    try {
+      const response = await new Promise((resolve, reject) => {
+        const req = https.request(options, res => {
+          let data = "";
 
-    const response = await new Promise((resolve, reject) => {
-      const req = https.request(options, res => {
-        let data = "";
+          res.on("data", chunk => {
+            data += chunk;
+          });
 
-        res.on("data", chunk => {
-          data += chunk;
+          res.on("end", () => {
+            resolve(JSON.parse(data));
+          });
         });
 
-        res.on("end", () => {
-          resolve(JSON.parse(data));
+        req.on("error", error => {
+          reject(error);
         });
+
+        req.write(requestData);
+        req.end();
       });
-
-      req.on("error", error => {
-        reject(error);
-      });
-
-      req.write(requestData);
-      req.end();
-    });
-
-    const responseMessage = (response as any).choices[0].message.content;
-    setMessages(m => [...m, { role: "assistant", content: responseMessage } as TMessage]);
+      const responseMessage = (response as any).choices[0].message.content;
+      setMessages(m => [...m, { role: "assistant", content: responseMessage } as TMessage]);
+    } catch (err) {
+      setError(err instanceof Error ? err : new Error("An error occurred."));
+    } finally {
+      setLoading(false);
+    }
   };
 
   return {
@@ -86,6 +94,8 @@ const useNFTViewer = (selectedNFT: any) => {
     message,
     setMessage,
     messages,
+    loading,
+    error,
   };
 };
 

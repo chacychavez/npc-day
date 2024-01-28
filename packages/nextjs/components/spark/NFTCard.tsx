@@ -15,7 +15,7 @@ export const NFTCard = ({ readOnly = false, nft, openNFTViewer }: TNFTCardProps)
   const truncated = nft.description ? nft.description?.length > DESC_MAX_LENGTH : false;
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-80 sm:w-96 bg-base-100 shadow-xl">
       <figure>
         {nft.image.pngUrl ? (
           <Image
@@ -23,7 +23,7 @@ export const NFTCard = ({ readOnly = false, nft, openNFTViewer }: TNFTCardProps)
             alt={nft.name ?? ""}
             height={320}
             width={320}
-            className="object-cover h-80 w-96"
+            className="object-cover h-80 w-80 sm:w-96"
           />
         ) : (
           <div className="animate-pulse flex space-x-4 h-80 w-96 bg-slate-700" />
