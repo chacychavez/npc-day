@@ -4,6 +4,7 @@ import { useAccount } from "wagmi";
 import { MetaHeader } from "~~/components/MetaHeader";
 import { NFTPicker } from "~~/components/spark";
 import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
+import { useGlobalState } from "~~/services/store/store";
 
 // import React, { useState, useEffect } from "react";
 // import { Engine } from "~~/engine";
@@ -12,7 +13,7 @@ import { useScaffoldContractWrite } from "~~/hooks/scaffold-eth";
 
 const Home: NextPage = () => {
   const { address } = useAccount();
-  const [guestAccount, setGuestAccount] = useState<string | null>(null);
+  const { guestAddress, setGuestAddress } = useGlobalState();
 
   // const { writeAsync: mintNPC } = useScaffoldContractWrite({
   //   contractName: "NPCNFT",
@@ -31,7 +32,7 @@ const Home: NextPage = () => {
   // }, []);
   const connectWithGuestAccount = () => {
     // use a guest account with NFTs
-    setGuestAccount("paulgadi.eth");
+    setGuestAddress("paulgadi.eth");
   };
 
   return (
@@ -39,8 +40,8 @@ const Home: NextPage = () => {
       <MetaHeader />
       <div className="flex items-center flex-col flex-grow justify-center">
         <div className="px-5 py-5">
-          {address || guestAccount ? (
-            <NFTPicker address={address ?? guestAccount ?? ""} />
+          {address || guestAddress ? (
+            <NFTPicker address={address ?? guestAddress ?? ""} />
           ) : (
             <div className="h-full flex flex-col items-center">
               <div className="w-96 text-center">

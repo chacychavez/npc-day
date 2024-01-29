@@ -20,6 +20,8 @@ type TGlobalState = {
   cachedNFTData: Record<string, OwnedNftsResponse>;
   setNativeCurrencyPrice: (newNativeCurrencyPriceState: number) => void;
   setCachedNFTData: (newCachedNFTData: Record<string, OwnedNftsResponse>) => void;
+  guestAddress?: string;
+  setGuestAddress: (guestAddress: string) => void;
 };
 
 export const useGlobalState = create<TGlobalState>(set => ({
@@ -27,4 +29,6 @@ export const useGlobalState = create<TGlobalState>(set => ({
   cachedNFTData: {},
   setNativeCurrencyPrice: (newValue: number): void => set(() => ({ nativeCurrencyPrice: newValue })),
   setCachedNFTData: (newValue: Record<string, OwnedNftsResponse>): void => set(() => ({ cachedNFTData: newValue })),
+  guestAddress: undefined,
+  setGuestAddress: (guestAddress: string): void => set(() => ({ guestAddress })),
 }));

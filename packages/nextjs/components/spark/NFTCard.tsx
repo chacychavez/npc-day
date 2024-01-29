@@ -30,7 +30,7 @@ export const NFTCard = ({ readOnly = false, nft, openNFTViewer }: TNFTCardProps)
         )}
       </figure>
       <div className="card-body">
-        <span className="text-sm">{nft.collection?.name}</span>
+        <span className="text-sm text-warning">{nft.collection?.name}</span>
         <h2 className="card-title">{nft.name}</h2>
         <p className="break-words">
           {nft.description && nft.description?.slice(0, expandDescription ? nft.description?.length : DESC_MAX_LENGTH)}
