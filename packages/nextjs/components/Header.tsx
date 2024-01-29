@@ -9,12 +9,12 @@ import { useOutsideClick } from "~~/hooks/scaffold-eth";
 const NavLink = ({ href, children }: { href: string; children: React.ReactNode }) => {
   const router = useRouter();
   const isActive = router.pathname === href;
-  console.log(router.pathname, href, isActive);
+
   return (
     <Link
       href={href}
       passHref
-      className={`${
+      className={`w-full py-4 px-6 my-1 lg:my-0 ${
         isActive ? "bg-secondary shadow-md text-secondary-content" : ""
       } hover:bg-secondary hover:shadow-md focus:!bg-secondary focus:!text-secondary-content hover:text-secondary-content py-1.5 px-3 text-sm rounded-full gap-2 grid grid-flow-col`}
     >
@@ -29,6 +29,7 @@ const NavLink = ({ href, children }: { href: string; children: React.ReactNode }
 export const Header = () => {
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
   const burgerMenuRef = useRef<HTMLDivElement>(null);
+
   useOutsideClick(
     burgerMenuRef,
     useCallback(() => setIsDrawerOpen(false), []),
@@ -76,7 +77,7 @@ export const Header = () => {
           {isDrawerOpen && (
             <ul
               tabIndex={0}
-              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-52"
+              className="menu menu-compact dropdown-content mt-3 p-2 shadow bg-base-100 rounded-box w-60"
               onClick={() => {
                 setIsDrawerOpen(false);
               }}
