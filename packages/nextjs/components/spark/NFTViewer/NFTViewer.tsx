@@ -11,14 +11,18 @@ export const NFTViewer = ({ selectedNFT }: TNFTViewerProps) => {
 
   return (
     <div className="flex flex-col md:flex-row gap-x-5 gap-y-5">
-      <div className="overflow-auto h-[72vh]">
-        <NFTCard nft={selectedNFT} readOnly />
+      <div className="overflow-auto min-h-[62vh] max-h-[72vh]">
+        <div className="w-full flex justify-center">
+          <NFTCard nft={selectedNFT} readOnly />
+        </div>
       </div>
       <div className="flex-1 flex flex-col gap-y-5">
         <div className="flex flex-col-reverse h-[62vh] overflow-auto py-2 px-4  bg-base-100 rounded-xl">
-          {loading && (
+          {(loading || error) && (
             <div className="my-2 flex justify-start">
-              <div className="rounded-xl p-4 bg-secondary text-secondary-content">Typing...</div>
+              <div className="rounded-xl p-4 bg-secondary text-secondary-content">
+                {error ? "Sorry. An error occured" : "Typing..."}
+              </div>
             </div>
           )}
           {messages

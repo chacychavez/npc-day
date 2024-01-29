@@ -21,7 +21,7 @@ export const NFTPicker = ({ address, className = "" }: TNFTPickerProps) => {
     return (
       <div className="animate-pulse flex flex-wrap justify-center mt-10 gap-x-4 gap-y-6">
         {[1, 2, 3, 4, 5, 6].map(i => (
-          <div key={i} className="flex flex-col gap-4 w-96 bg-slate-">
+          <div key={i} className="flex flex-col gap-4 w-80 lg:w-96 bg-slate-">
             <div className="bg-slate-300 h-32 w-full"></div>
             <div className="bg-slate-300 h-4 w-28"></div>
             <div className="bg-slate-300 h-4 w-full"></div>
@@ -39,7 +39,7 @@ export const NFTPicker = ({ address, className = "" }: TNFTPickerProps) => {
       </div>
     );
   }
-  console.log(selectedNFT);
+
   return (
     <div className={className}>
       <div className="w-full flex flex-col items-center justify-center">
