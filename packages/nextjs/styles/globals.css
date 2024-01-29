@@ -44,6 +44,6 @@ p {
 
 /* Handle */
 ::-webkit-scrollbar-thumb {
-  @apply bg-secondary;
+  @apply bg-accent;
   border-radius: 5px;
 }

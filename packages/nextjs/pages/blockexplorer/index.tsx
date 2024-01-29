@@ -30,11 +30,16 @@ const Blockexplorer: NextPage = () => {
       notification.error(
         <>
           <p className="font-bold mt-0 mb-1">
-            <code className="italic bg-base-300 text-base font-bold"> targeNetwork </code> is not localhost
+            <code className="text-primary-content italic bg-base-300 text-base font-bold"> targeNetwork </code> is not
+            localhost
           </p>
           <p className="m-0">
-            - You are on <code className="italic bg-base-300 text-base font-bold">{getTargetNetwork().name}</code> .This
-            block explorer is only for <code className="italic bg-base-300 text-base font-bold">localhost</code>.
+            - You are on{" "}
+            <code className="text-primary-content talic bg-base-300 text-base font-bold">
+              {getTargetNetwork().name}
+            </code>{" "}
+            .This block explorer is only for{" "}
+            <code className="text-primary-content italic bg-base-300 text-base font-bold">localhost</code>.
           </p>
           <p className="mt-1 break-normal">
             - You can use{" "}
