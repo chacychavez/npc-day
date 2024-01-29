@@ -50,7 +50,7 @@ export const NFTPicker = ({ address, className = "" }: TNFTPickerProps) => {
           <input
             type="text"
             placeholder="Search by name"
-            className="input input-bordered w-full max-w-xs"
+            className="input input-bordered w-full max-w-xs text-lg"
             onChange={e => setSearchTerm(e.target.value)}
           />
         </label>
@@ -80,7 +80,7 @@ export const NFTPicker = ({ address, className = "" }: TNFTPickerProps) => {
               Load more
             </button>
           ) : (
-            <div className="text-lg py-3">Fetching more nfts...</div>
+            <div className="text-lg py-3">Fetching more NFTs...</div>
           )}
         </div>
       )}
